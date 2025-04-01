@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import line from "/src/images/Line.png";
 
 export default function NewCard({ onAddPlace, onClose }) {
   const [locationName, setLocationName] = useState("");
@@ -30,6 +29,15 @@ export default function NewCard({ onAddPlace, onClose }) {
 
     const error = validateName(value);
     setNameError(error);
+
+    const errorElement = document.getElementById("locationName-error");
+    if (errorElement) {
+      if (error && isTouchedName) {
+        errorElement.classList.add("popup__error_visible");
+      } else {
+        errorElement.classList.remove("popup__error_visible");
+      }
+    }
   };
 
   const handleImageChange = (event) => {
@@ -39,6 +47,15 @@ export default function NewCard({ onAddPlace, onClose }) {
 
     const error = validateImage(value);
     setImageError(error);
+
+    const errorElement = document.getElementById("locationImage-error");
+    if (errorElement) {
+      if (error && isTouchedImage) {
+        errorElement.classList.add("popup__error_visible");
+      } else {
+        errorElement.classList.remove("popup__error_visible");
+      }
+    }
   };
 
   const handleSubmit = (event) => {
@@ -50,6 +67,9 @@ export default function NewCard({ onAddPlace, onClose }) {
     if (nameValidationError || imageValidationError) {
       setNameError(nameValidationError);
       setImageError(imageValidationError);
+
+      document.getElementById("locationName-error").style.display = nameValidationError ? "block" : "none";
+      document.getElementById("locationImage-error").style.display = imageValidationError ? "block" : "none";
       return;
     }
 
@@ -86,10 +106,14 @@ export default function NewCard({ onAddPlace, onClose }) {
               minLength="2"
               maxLength="30"
             />
-            <img className="modal-content__line" src={line} alt="line" />
-            {nameError && isTouchedName && (
-              <div className="error-message">{nameError}</div>
-            )}
+            <div className="line-separator"></div>
+            <div 
+              className="error-message" 
+              id="locationName-error" 
+              style={{ display: nameError ? "block" : "none" }}
+            >
+              {nameError}
+            </div>
           </div>
 
           <div className="modal-content__field">
@@ -102,10 +126,14 @@ export default function NewCard({ onAddPlace, onClose }) {
               onChange={handleImageChange}
               required
             />
-            <img className="modal-content__line" src={line} alt="line" />
-            {imageError && isTouchedImage && (
-              <div className="error-message">{imageError}</div>
-            )}
+            <div className="line-separator"></div>
+            <div 
+              className="error-message" 
+              id="locationImage-error" 
+              style={{ display: imageError ? "block" : "none" }}
+            >
+              {imageError}
+            </div>
           </div>
 
           <button type="submit" className="modal-content__button">Criar</button>

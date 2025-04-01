@@ -76,3 +76,17 @@
     margin-bottom: 25px;
   }
 }
+
+.line-separator {
+  width: 90%;
+  height: 1px;
+  background-color: #ccc;
+  margin: 8px 0;
+}
+
+
+.popup__error_visible {
+  display: block;
+  color: red;
+  font-size: 12px;
+}

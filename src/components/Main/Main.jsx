@@ -48,6 +48,12 @@ export default function Main() {
     return () => document.removeEventListener("keydown", handleEscClose);
   }, []);
 
+  const handleOverlayClick = (e) => {
+    if (e.target.classList.contains("overlay")) {
+      handleCloseAllPopups();
+    }
+  };
+
   const handleCardClick = (card) => {
     setSelectedImage({ src: card.link, alt: card.name });
     setIsImagePopupOpen(true);
@@ -82,28 +88,37 @@ export default function Main() {
   };
 
   return (
-    <main className="content">
+    <main className="content" onClick={handleOverlayClick}>
       <section className="profile">
         <div className="profile-avatar-container">
           <img className="profile__avatar" src={currentAvatar} alt="Imagem de perfil" />
           <div className="profile-avatar-overlay" onClick={() => setIsEditAvatarOpen(true)}>
-            <img className="profile-avatar-edit" src={editIcon} alt="Editar foto" />
+            <img className="profile-avatar-edit" src={editIcon} alt="Editar foto" style={{ cursor: "pointer" }} />
           </div>
         </div>
-
         <div className="profile__info">
           <h1 className="profile__name">{currentUser.name}</h1>
           <h3 className="profile__text">{currentUser.job}</h3>
           <div className="profile__edit">
-            <img alt="Botão de edição" className="profile__edtimg" src={editIcon} onClick={() => setIsEditProfileOpen(true)} />
+            <img 
+              alt="Botão de edição" 
+              className="profile__edtimg" 
+              src={editIcon} 
+              onClick={() => setIsEditProfileOpen(true)} 
+              style={{ cursor: "pointer" }}
+            />
           </div>
         </div>
-
         <div className="profile__add">
-          <img className="profile__addimg" src={addIcon} alt="Botão de adicionar" onClick={() => setIsNewCardOpen(true)} />
+          <img 
+            className="profile__addimg" 
+            src={addIcon} 
+            alt="Botão de adicionar" 
+            onClick={() => setIsNewCardOpen(true)} 
+            style={{ cursor: "pointer" }}
+          />
         </div>
       </section>
-
       <section className="elements">
         {cards.map((card) => (
           <Card 
@@ -115,14 +130,12 @@ export default function Main() {
           />
         ))}
       </section>
-
       {isEditAvatarOpen && (
         <EditAvatar 
           onUpdateAvatar={handleUpdateAvatar} 
           onClose={handleCloseAllPopups} 
         />
       )}
-      
       {isEditProfileOpen && (
         <EditProfile 
           currentUser={currentUser} 
@@ -130,14 +143,12 @@ export default function Main() {
           onClose={handleCloseAllPopups} 
         />
       )}
-      
       {isNewCardOpen && (
         <NewCard 
           onAddPlace={handleAddPlace} 
           onClose={handleCloseAllPopups} 
         />
       )}
-      
       {isImagePopupOpen && selectedImage && (
         <ImagePopup 
           isOpen={isImagePopupOpen} 

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import line from "/src/images/Line.png";
 
 export default function EditProfile({ currentUser, onUpdateUser, onClose }) {
-  const [isSaving, setIsSaving] = useState(false);
-  const [nameError, setNameError] = useState("");
-  const [jobError, setJobError] = useState("");
   const [name, setName] = useState("");
   const [job, setJob] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [jobError, setJobError] = useState("");
+  const [isTouchedName, setIsTouchedName] = useState(false);
+  const [isTouchedJob, setIsTouchedJob] = useState(false);
 
   const validateName = (value) => {
     if (!value.trim()) return "Preencha esse campo.";
@@ -25,17 +25,19 @@ export default function EditProfile({ currentUser, onUpdateUser, onClose }) {
   const handleNameChange = (event) => {
     const value = event.target.value;
     setName(value);
+    setIsTouchedName(true);
+
     const error = validateName(value);
     setNameError(error);
-    document.getElementById("locationName-error-name").style.display = error ? "block" : "none";
   };
 
   const handleJobChange = (event) => {
     const value = event.target.value;
     setJob(value);
+    setIsTouchedJob(true);
+
     const error = validateJob(value);
     setJobError(error);
-    document.getElementById("locationName-error-job").style.display = error ? "block" : "none";
   };
 
   const handleSubmit = (event) => {
@@ -44,27 +46,33 @@ export default function EditProfile({ currentUser, onUpdateUser, onClose }) {
     const nameValidationError = validateName(name);
     const jobValidationError = validateJob(job);
 
-    setNameError(nameValidationError);
-    setJobError(jobValidationError);
+    if (nameValidationError || jobValidationError) {
+      setNameError(nameValidationError);
+      setJobError(jobValidationError);
+      return;
+    }
 
-    document.getElementById("locationName-error-name").style.display = nameValidationError ? "block" : "none";
-    document.getElementById("locationName-error-job").style.display = jobValidationError ? "block" : "none";
+    onUpdateUser({
+      name: name || currentUser.name,  
+      job: job || currentUser.job      
+    });
+    handleClose();
+  };
 
-    if (nameValidationError || jobValidationError) return;
-
-    setIsSaving(true);
-
-    setTimeout(() => {
-      onUpdateUser({ name, job });
-      setIsSaving(false);
-      onClose();
-    }, 1000);
+  const handleClose = () => {
+    setName("");
+    setJob("");
+    setNameError("");
+    setJobError("");
+    setIsTouchedName(false);
+    setIsTouchedJob(false);
+    onClose();
   };
 
   return (
     <div id="Modal" className="form modal_opened">
       <div className="modal-content">
-        <span className="close" onClick={onClose}>&times;</span>
+        <span className="close" onClick={handleClose}>&times;</span>
         
         <form id="form" onSubmit={handleSubmit} autoComplete="off">
           <h2 className="modal-content__title">Editar perfil</h2>
@@ -75,21 +83,16 @@ export default function EditProfile({ currentUser, onUpdateUser, onClose }) {
               name="name"
               className="modal-content__name"
               placeholder="Jacques Cousteau"
-              autoComplete="off"
-              value={name}
+              defaultValue=""  
+              onChange={handleNameChange}
+              required
               minLength="2"
               maxLength="40"
-              required
-              onChange={handleNameChange}  // 🔥 Validação em tempo real
             />
-            <img className="modal-content__line" src={line} alt="line" />
-            <div 
-              className="error-message" 
-              id="locationName-error-name"
-              style={{ color: "red", marginTop: "5px", display: nameError ? "block" : "none" }}
-            >
-              {nameError}
-            </div>
+            <div className="line-separator"></div>
+            {nameError && isTouchedName && (
+              <div className="error-message popup__error_visible">{nameError}</div>
+            )}
           </div>
 
           <div className="modal-content__field">
@@ -98,31 +101,27 @@ export default function EditProfile({ currentUser, onUpdateUser, onClose }) {
               name="job"
               className="modal-content__text"
               placeholder="Explorador"
-              autoComplete="off"
-              value={job}
+              defaultValue=""  
+              onChange={handleJobChange}
+              required
               minLength="2"
               maxLength="200"
-              required
-              onChange={handleJobChange}  // 🔥 Validação em tempo real
             />
-            <img className="modal-content__line" src={line} alt="line" />
-            <div 
-              className="error-message" 
-              id="locationName-error-job"
-            >
-              {jobError}
-            </div>
+            <div className="line-separator"></div>
+            {jobError && isTouchedJob && (
+              <div className="error-message popup__error_visible">{jobError}</div>
+            )}
           </div>
 
-          <button type="submit" className="modal-content__button">
-            {isSaving ? "Salvando..." : "Salvar"}
-          </button>
+          <button type="submit" className="modal-content__button">Salvar</button>
         </form>
       </div>
-      <div className="overlay" onClick={onClose}></div>
+      <div className="overlay" onClick={handleClose}></div>
     </div>
   );
 }
+
+
 
 
 

@@ -5,11 +5,11 @@ import likedIcon from "/src/images/Union.png";
 import rectangle from "/src/images/Rectangle.png";
 
 export default function Card({ card, onCardClick, onCardDelete, onCardLike }) {
-  const [isLiked, setIsLiked] = useState(false); // ✅ Controle do estado de curtida
+  const [isLiked, setIsLiked] = useState(false); 
 
   const handleLikeClick = () => {
     setIsLiked(!isLiked);
-    onCardLike(card._id, !isLiked); // ✅ Passa o novo estado do like para o Main.jsx
+    onCardLike(card._id, !isLiked); 
   };
 
   return (
@@ -18,7 +18,7 @@ export default function Card({ card, onCardClick, onCardDelete, onCardLike }) {
         src={trashIcon}
         className="element__delete"
         alt="Excluir"
-        onClick={() => onCardDelete(card._id)} // ✅ Função de excluir cartão
+        onClick={() => onCardDelete(card._id)} 
       />
       <img
         className="element__rectangle"
@@ -35,7 +35,7 @@ export default function Card({ card, onCardClick, onCardDelete, onCardLike }) {
         <h3 className="element__title">{card.name}</h3>
         <img
           className="element__like"
-          src={isLiked ? likedIcon : likeIcon} // ✅ Alterna entre os ícones de curtida
+          src={isLiked ? likedIcon : likeIcon} 
           alt="Curtir"
           onClick={handleLikeClick}
         />
