@@ -34,7 +34,7 @@ export default function EditAvatar({ currentAvatar, onUpdateAvatar, onClose }) {
   };
 
   const handleClose = () => {
-    setAvatarLink(currentAvatar || ""); // Reseta para o avatar atual
+    setAvatarLink(currentAvatar || ""); 
     setAvatarError("");
     setIsTouched(false);
     onClose();
