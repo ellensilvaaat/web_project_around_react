@@ -92,7 +92,6 @@ export default function NewCard({ onAddPlace, onClose }) {
       <div className="modal-content addModal">
         <span className="close" onClick={onClose}>&times;</span>
         <h2 className="modal-content__title">Adicionar Novo Local</h2>
-
         <form id="addForm" className="popup-avatar__form" onSubmit={handleSubmit}>
           <div className="modal-content__field">
             <input
@@ -115,7 +114,6 @@ export default function NewCard({ onAddPlace, onClose }) {
               {nameError}
             </div>
           </div>
-
           <div className="modal-content__field">
             <input
               type="url"
@@ -135,7 +133,6 @@ export default function NewCard({ onAddPlace, onClose }) {
               {imageError}
             </div>
           </div>
-
           <button type="submit" className="modal-content__button">Criar</button>
         </form>
       </div>

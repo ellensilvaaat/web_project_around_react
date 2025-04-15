@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import { useState, useContext } from 'react';
+import CurrentUserContext from "@/contexts/CurrentUserContext";
 
-export default function EditProfile({ currentUser, onUpdateUser, onClose }) {
+export default function EditProfile({ onClose }) {
+  const { handleUpdateUser } = useContext(CurrentUserContext);
+
   const [name, setName] = useState("");
   const [job, setJob] = useState("");
   const [nameError, setNameError] = useState("");
@@ -22,41 +25,33 @@ export default function EditProfile({ currentUser, onUpdateUser, onClose }) {
     return "";
   };
 
-  const handleNameChange = (event) => {
-    const value = event.target.value;
+  const handleNameChange = (e) => {
+    const value = e.target.value;
     setName(value);
     setIsTouchedName(true);
-
-    const error = validateName(value);
-    setNameError(error);
+    setNameError(validateName(value));
   };
 
-  const handleJobChange = (event) => {
-    const value = event.target.value;
+  const handleJobChange = (e) => {
+    const value = e.target.value;
     setJob(value);
     setIsTouchedJob(true);
-
-    const error = validateJob(value);
-    setJobError(error);
+    setJobError(validateJob(value));
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const nameErr = validateName(name);
+    const jobErr = validateJob(job);
 
-    const nameValidationError = validateName(name);
-    const jobValidationError = validateJob(job);
-
-    if (nameValidationError || jobValidationError) {
-      setNameError(nameValidationError);
-      setJobError(jobValidationError);
+    if (nameErr || jobErr) {
+      setNameError(nameErr);
+      setJobError(jobErr);
       return;
     }
 
-    onUpdateUser({
-      name: name || currentUser.name,  
-      job: job || currentUser.job      
-    });
-    handleClose();
+    handleUpdateUser({ name, about: job });
+    onClose();
   };
 
   const handleClose = () => {
@@ -73,7 +68,7 @@ export default function EditProfile({ currentUser, onUpdateUser, onClose }) {
     <div id="Modal" className="form modal_opened">
       <div className="modal-content">
         <span className="close" onClick={handleClose}>&times;</span>
-        
+
         <form id="form" onSubmit={handleSubmit} autoComplete="off">
           <h2 className="modal-content__title">Editar perfil</h2>
 
@@ -83,7 +78,7 @@ export default function EditProfile({ currentUser, onUpdateUser, onClose }) {
               name="name"
               className="modal-content__name"
               placeholder="Jacques Cousteau"
-              defaultValue=""  
+              defaultValue=""
               onChange={handleNameChange}
               required
               minLength="2"
@@ -101,7 +96,7 @@ export default function EditProfile({ currentUser, onUpdateUser, onClose }) {
               name="job"
               className="modal-content__text"
               placeholder="Explorador"
-              defaultValue=""  
+              defaultValue=""
               onChange={handleJobChange}
               required
               minLength="2"
@@ -113,13 +108,19 @@ export default function EditProfile({ currentUser, onUpdateUser, onClose }) {
             )}
           </div>
 
-          <button type="submit" className="modal-content__button">Salvar</button>
+          <button type="submit" className="modal-content__button">
+            Salvar
+          </button>
         </form>
       </div>
+
       <div className="overlay" onClick={handleClose}></div>
     </div>
   );
 }
+
+
+
 
 
 

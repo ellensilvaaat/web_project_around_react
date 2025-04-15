@@ -52,4 +52,3 @@ https://github.com/ellensilvaaat/web_project_around_react
 - **Deletar Cartões:** Permite remover cartões individualmente.
 - **Curtir Cartões:** Permite curtir e descurtir cartões.
 - **Fechar Popups:** Pode ser feito clicando na sobreposição, pressionando a tecla "Esc" ou clicando no botão "X".
->>>>>>> 7795b5ac31913ea5f44a666f844e649b4ecc106c

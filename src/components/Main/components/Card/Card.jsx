@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import trashIcon from "/src/images/Trash.png";
 import likeIcon from "/src/images/Group.png";
 import likedIcon from "/src/images/Union.png";
 import rectangle from "/src/images/Rectangle.png";
 
 export default function Card({ card, onCardClick, onCardDelete, onCardLike }) {
-  const [isLiked, setIsLiked] = useState(false); 
-
   const handleLikeClick = () => {
-    setIsLiked(!isLiked);
-    onCardLike(card._id, !isLiked); 
+    onCardLike(card);
+  };
+
+  const handleDeleteClick = () => {
+    onCardDelete(card._id);
   };
 
   return (
@@ -18,7 +19,7 @@ export default function Card({ card, onCardClick, onCardDelete, onCardLike }) {
         src={trashIcon}
         className="element__delete"
         alt="Excluir"
-        onClick={() => onCardDelete(card._id)} 
+        onClick={handleDeleteClick}
       />
       <img
         className="element__rectangle"
@@ -35,7 +36,7 @@ export default function Card({ card, onCardClick, onCardDelete, onCardLike }) {
         <h3 className="element__title">{card.name}</h3>
         <img
           className="element__like"
-          src={isLiked ? likedIcon : likeIcon} 
+          src={card.isLiked ? likedIcon : likeIcon}
           alt="Curtir"
           onClick={handleLikeClick}
         />
@@ -43,6 +44,10 @@ export default function Card({ card, onCardClick, onCardDelete, onCardLike }) {
     </div>
   );
 }
+
+
+
+
 
 
 

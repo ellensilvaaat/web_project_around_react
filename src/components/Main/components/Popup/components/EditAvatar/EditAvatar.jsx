@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 export default function EditAvatar({ currentAvatar, onUpdateAvatar, onClose }) {
-  const [avatarLink, setAvatarLink] = useState(currentAvatar || "");
+  const inputRef = useRef(null);
   const [avatarError, setAvatarError] = useState("");
   const [isTouched, setIsTouched] = useState(false);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.value = ""; // limpa o campo ao abrir
+    }
+  }, [currentAvatar]);
 
   const validateUrl = (value) => {
     const urlPattern = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))$/i;
@@ -12,29 +18,25 @@ export default function EditAvatar({ currentAvatar, onUpdateAvatar, onClose }) {
     return "";
   };
 
-  const handleAvatarChange = (event) => {
-    const value = event.target.value;
-    setAvatarLink(value);
+  const handleAvatarChange = () => {
+    const value = inputRef.current.value;
     setIsTouched(true);
-
-    const error = validateUrl(value);
-    setAvatarError(error);
+    setAvatarError(validateUrl(value));
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    const error = validateUrl(avatarLink);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const value = inputRef.current.value;
+    const error = validateUrl(value);
     setAvatarError(error);
-
     if (error) return;
 
-    onUpdateAvatar(avatarLink);
+    onUpdateAvatar(value);
     handleClose();
   };
 
   const handleClose = () => {
-    setAvatarLink(currentAvatar || ""); 
+    if (inputRef.current) inputRef.current.value = ""; // limpa ao fechar
     setAvatarError("");
     setIsTouched(false);
     onClose();
@@ -43,7 +45,9 @@ export default function EditAvatar({ currentAvatar, onUpdateAvatar, onClose }) {
   return (
     <div id="modal-avatar" className="popup-avatar popup-avatar_opened">
       <div className="popup-avatar__content">
-        <button className="popup__close-button" onClick={handleClose}>&times;</button>
+        <button className="popup__close-button" onClick={handleClose}>
+          &times;
+        </button>
         <h2 className="popup-avatar__title">Alterar foto do perfil</h2>
         <form id="form-avatar" className="popup-avatar__form" onSubmit={handleSubmit}>
           <div className="modal-content__field">
@@ -52,24 +56,31 @@ export default function EditAvatar({ currentAvatar, onUpdateAvatar, onClose }) {
               id="avatar-link"
               className="popup-avatar__input"
               placeholder="https://somewebsite.com/someimage.jpg"
-              value={avatarLink}
+              ref={inputRef}
               onChange={handleAvatarChange}
               required
             />
             <div className="line-separator"></div>
             {avatarError && isTouched && (
-              <div className="error-message popup__error_visible" id="locationName-error">
+              <div
+                className="error-message popup__error_visible"
+                id="locationName-error"
+              >
                 {avatarError}
               </div>
             )}
           </div>
-          
-          <button type="submit" className="popup-avatar__save">Salvar</button>
+
+          <button type="submit" className="popup-avatar__save">
+            Salvar
+          </button>
         </form>
       </div>
       <div className="overlay" onClick={handleClose}></div>
     </div>
   );
 }
+
+
 
 
