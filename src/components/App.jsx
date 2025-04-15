@@ -41,8 +41,6 @@ export default function App() {
 
   const handleOpenPopup = (name) => setPopup(name);
   const handleClosePopup = () => setPopup("");
-
-  // Atualização local do perfil
   const handleUpdateUser = (data) => {
     setCurrentUser((prevUser) => ({
       ...prevUser,
@@ -52,7 +50,6 @@ export default function App() {
     handleClosePopup();
   };
 
-  // Atualização local do avatar
   const handleUpdateAvatar = (avatarUrl) => {
     setCurrentUser((prevUser) => ({
       ...prevUser,
@@ -61,7 +58,6 @@ export default function App() {
     handleClosePopup();
   };
 
-  // Novo card local
   const handleAddPlace = (newCard) => {
     const fakeCard = {
       ...newCard,
@@ -74,7 +70,6 @@ export default function App() {
     handleClosePopup();
   };
 
-  // Curtir/descurtir local
   const handleCardLike = (card) => {
     const updatedCards = cards.map((c) =>
       c._id === card._id ? { ...c, isLiked: !c.isLiked } : c
@@ -82,7 +77,6 @@ export default function App() {
     setCards(updatedCards);
   };
 
-  // Remover card local
   const handleCardDelete = (cardId) => {
     const filteredCards = cards.filter((card) => card._id !== cardId);
     setCards(filteredCards);
