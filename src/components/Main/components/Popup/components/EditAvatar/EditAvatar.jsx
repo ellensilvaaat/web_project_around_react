@@ -7,7 +7,7 @@ export default function EditAvatar({ currentAvatar, onUpdateAvatar, onClose }) {
 
   useEffect(() => {
     if (inputRef.current) {
-      inputRef.current.value = ""; // limpa o campo ao abrir
+      inputRef.current.value = "";
     }
   }, [currentAvatar]);
 
@@ -36,7 +36,7 @@ export default function EditAvatar({ currentAvatar, onUpdateAvatar, onClose }) {
   };
 
   const handleClose = () => {
-    if (inputRef.current) inputRef.current.value = ""; // limpa ao fechar
+    if (inputRef.current) inputRef.current.value = "";
     setAvatarError("");
     setIsTouched(false);
     onClose();
