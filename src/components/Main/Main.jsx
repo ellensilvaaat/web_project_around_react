@@ -8,7 +8,7 @@ import NewCard from "./components/Popup/components/NewCard/NewCard";
 import Card from "./components/Card/Card";
 import ImagePopup from "./components/Popup/components/ImagePopup/ImagePopup";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
-import "../../index.css";
+import '@/index.css';
 
 export default function Main({
   popup,
