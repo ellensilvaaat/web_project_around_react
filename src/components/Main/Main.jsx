@@ -9,6 +9,7 @@ import Card from "./components/Card/Card";
 import ImagePopup from "./components/Popup/components/ImagePopup/ImagePopup";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 import '@/index.css';
+import Popup from "./components/Popup/Popup";
 
 export default function Main({
   popup,
@@ -144,5 +145,12 @@ export default function Main({
       )}
     </main>
   );
+  
+  {isEditProfileOpen && (
+    <Popup onClose={handleCloseAllPopups} title="Editar perfil">
+      <EditProfileContent />
+    </Popup>
+  )}  
+
 }
 
