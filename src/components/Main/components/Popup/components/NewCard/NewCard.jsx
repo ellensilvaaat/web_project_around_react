@@ -16,11 +16,11 @@ export default function NewCard({ onAddPlace, onClose }) {
   };
 
   const validateImage = (value) => {
-    const urlPattern = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))$/i;
+    const urlPattern = /^https?:\/\/[^ "]+$/;
     if (!value.trim()) return "Preencha esse campo.";
-    if (!urlPattern.test(value)) return "O link deve ser uma URL válida de imagem.";
+    if (!urlPattern.test(value)) return "O link deve ser uma URL válida.";
     return "";
-  };
+  };  
 
   const handleNameChange = (event) => {
     const value = event.target.value;

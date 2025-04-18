@@ -41,14 +41,16 @@ export default function App() {
 
   const handleOpenPopup = (name) => setPopup(name);
   const handleClosePopup = () => setPopup("");
-  const handleUpdateUser = (data) => {
-    setCurrentUser((prevUser) => ({
-      ...prevUser,
-      name: data.name,
-      about: data.about
-    }));
+
+const handleUpdateUser = async (data) => {
+  try {
+    const updatedUser = await api.setUserInfo(data);
+    setCurrentUser(updatedUser);
     handleClosePopup();
-  };
+  } catch (error) {
+    console.error("Erro ao atualizar usuário:", error);
+  }
+};
 
   const handleUpdateAvatar = (avatarUrl) => {
     setCurrentUser((prevUser) => ({
@@ -58,17 +60,16 @@ export default function App() {
     handleClosePopup();
   };
 
-  const handleAddPlace = (newCard) => {
-    const fakeCard = {
-      ...newCard,
-      _id: String(Date.now()),
-      isLiked: false,
-      likes: [],
-      owner: currentUser._id || "local-user"
-    };
-    setCards((prev) => [fakeCard, ...prev]);
-    handleClosePopup();
+  const handleAddPlace = async (newCard) => {
+    try {
+      const savedCard = await api.addCard(newCard);
+      setCards((prev) => [savedCard, ...prev]);
+      handleClosePopup();
+    } catch (error) {
+      console.error("Erro ao adicionar novo cartão:", error);
+    }
   };
+  
 
   const handleCardLike = (card) => {
     const updatedCards = cards.map((c) =>

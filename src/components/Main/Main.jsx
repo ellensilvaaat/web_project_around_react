@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import avatar from "../../images/Avatar.png";
 import editIcon from "../../images/Editbutton.png";
 import addIcon from "../../images/Addbutton.png";
@@ -8,8 +8,7 @@ import NewCard from "./components/Popup/components/NewCard/NewCard";
 import Card from "./components/Card/Card";
 import ImagePopup from "./components/Popup/components/ImagePopup/ImagePopup";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
-import '@/index.css';
-import Popup from "./components/Popup/Popup";
+import "@/index.css";
 
 export default function Main({
   popup,
@@ -29,27 +28,26 @@ export default function Main({
     setCurrentAvatar(currentUser.avatar || avatar);
   }, [currentUser]);
 
+  const handleCloseAllPopups = useCallback(() => {
+    setSelectedImage(null);
+    setIsImagePopupOpen(false);
+    onClosePopup();
+  }, [onClosePopup]);
+
   useEffect(() => {
     const handleEscClose = (event) => {
       if (event.key === "Escape") {
         handleCloseAllPopups();
       }
     };
-
     document.addEventListener("keydown", handleEscClose);
     return () => document.removeEventListener("keydown", handleEscClose);
-  }, []);
+  }, [handleCloseAllPopups]);
 
   const handleOverlayClick = (e) => {
     if (e.target.classList.contains("overlay")) {
       handleCloseAllPopups();
     }
-  };
-
-  const handleCloseAllPopups = () => {
-    setSelectedImage(null);
-    setIsImagePopupOpen(false);
-    onClosePopup();
   };
 
   const handleCardClick = (card) => {
@@ -145,12 +143,7 @@ export default function Main({
       )}
     </main>
   );
-  
-  {isEditProfileOpen && (
-    <Popup onClose={handleCloseAllPopups} title="Editar perfil">
-      <EditProfileContent />
-    </Popup>
-  )}  
-
 }
+
+
 
