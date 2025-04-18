@@ -9,6 +9,7 @@ import Card from "./components/Card/Card";
 import ImagePopup from "./components/Popup/components/ImagePopup/ImagePopup";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 import "@/index.css";
+import Popup from "./components/Popup/Popup";
 
 export default function Main({
   popup,
@@ -140,6 +141,12 @@ export default function Main({
           imageAlt={selectedImage.alt}
           onClose={handleCloseAllPopups}
         />
+      )}
+
+      {popup === "base" && (
+        <Popup onClose={handleCloseAllPopups} title="Base popup">
+          <div style={{ display: "none" }}>Base popup invisível</div>
+        </Popup>
       )}
     </main>
   );
