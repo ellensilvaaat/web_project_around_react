@@ -12,7 +12,7 @@ export default function EditAvatar({ currentAvatar, onUpdateAvatar, onClose }) {
   }, [currentAvatar]);
 
   const validateUrl = (value) => {
-    const urlPattern = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))$/i;
+    const urlPattern = /^https?:\/\/[^ "]+$/i;
     if (!value.trim()) return "Por favor, insira um link válido.";
     if (!urlPattern.test(value)) return "O link deve ser uma URL válida de imagem.";
     return "";
@@ -70,7 +70,6 @@ export default function EditAvatar({ currentAvatar, onUpdateAvatar, onClose }) {
               </div>
             )}
           </div>
-
           <button type="submit" className="popup-avatar__save">
             Salvar
           </button>
@@ -80,6 +79,7 @@ export default function EditAvatar({ currentAvatar, onUpdateAvatar, onClose }) {
     </div>
   );
 }
+
 
 
 

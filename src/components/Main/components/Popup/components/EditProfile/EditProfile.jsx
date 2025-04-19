@@ -68,17 +68,15 @@ export default function EditProfile({ onClose }) {
     <div id="Modal" className="form modal_opened">
       <div className="modal-content">
         <span className="close" onClick={handleClose}>&times;</span>
-
         <form id="form" onSubmit={handleSubmit} autoComplete="off">
           <h2 className="modal-content__title">Editar perfil</h2>
-
           <div className="modal-content__field">
             <input
               type="text"
               name="name"
               className="modal-content__name"
-              placeholder="Jacques Cousteau"
-              defaultValue=""
+              placeholder="Digite seu nome"
+              value={name}
               onChange={handleNameChange}
               required
               minLength="2"
@@ -89,14 +87,13 @@ export default function EditProfile({ onClose }) {
               <div className="error-message popup__error_visible">{nameError}</div>
             )}
           </div>
-
           <div className="modal-content__field">
             <input
               type="text"
               name="job"
               className="modal-content__text"
-              placeholder="Explorador"
-              defaultValue=""
+              placeholder="Digite sua profissão"
+              value={job}
               onChange={handleJobChange}
               required
               minLength="2"
@@ -107,17 +104,16 @@ export default function EditProfile({ onClose }) {
               <div className="error-message popup__error_visible">{jobError}</div>
             )}
           </div>
-
           <button type="submit" className="modal-content__button">
             Salvar
           </button>
         </form>
       </div>
-
       <div className="overlay" onClick={handleClose}></div>
     </div>
   );
 }
+
 
 
 

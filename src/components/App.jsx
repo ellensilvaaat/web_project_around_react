@@ -9,7 +9,7 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState({
     name: "",
     about: "",
-    avatar: ""
+    avatar: "",
   });
 
   const [cards, setCards] = useState([]);
@@ -20,19 +20,12 @@ export default function App() {
       try {
         const [user, initialCards] = await Promise.all([
           api.getUserInfo(),
-          api.getInitialCards()
+          api.getInitialCards(),
         ]);
-
         setCurrentUser(user);
-
-        const enrichedCards = initialCards.map((card) => ({
-          ...card,
-          isLiked: false
-        }));
-
-        setCards(enrichedCards.reverse());
+        setCards(initialCards.reverse());
       } catch (error) {
-        console.error("Erro ao carregar dados iniciais:", error);
+        console.error("Erro ao carregar dados:", error);
       }
     }
 
@@ -42,54 +35,60 @@ export default function App() {
   const handleOpenPopup = (name) => setPopup(name);
   const handleClosePopup = () => setPopup("");
 
-const handleUpdateUser = async (data) => {
-  try {
-    const updatedUser = await api.setUserInfo(data);
-    setCurrentUser(updatedUser);
-    handleClosePopup();
-  } catch (error) {
-    console.error("Erro ao atualizar usuário:", error);
-  }
-};
+  const handleUpdateUser = async (data) => {
+    try {
+      const updatedUser = await api.setUserInfo(data);
+      setCurrentUser(updatedUser);
+      handleClosePopup();
+    } catch (error) {
+      console.error("Erro ao atualizar perfil:", error);
+    }
+  };
 
-  const handleUpdateAvatar = (avatarUrl) => {
-    setCurrentUser((prevUser) => ({
-      ...prevUser,
-      avatar: avatarUrl
-    }));
-    handleClosePopup();
+  const handleUpdateAvatar = async (url) => {
+    try {
+      const updatedUser = await api.setAvatar(url);
+      setCurrentUser(updatedUser);
+      handleClosePopup();
+    } catch (error) {
+      console.error("Erro ao atualizar avatar:", error);
+    }
   };
 
   const handleAddPlace = async (newCard) => {
     try {
-      const savedCard = await api.addCard(newCard);
-      setCards((prev) => [savedCard, ...prev]);
+      const createdCard = await api.addCard(newCard);
+      setCards((prev) => [createdCard, ...prev]);
       handleClosePopup();
     } catch (error) {
-      console.error("Erro ao adicionar novo cartão:", error);
+      console.error("Erro ao adicionar card:", error);
     }
   };
-  
 
-  const handleCardLike = (card) => {
-    const updatedCards = cards.map((c) =>
-      c._id === card._id ? { ...c, isLiked: !c.isLiked } : c
-    );
-    setCards(updatedCards);
+  const handleCardLike = async (card) => {
+    const isLiked = card.likes && card.likes.some((like) => like._id === currentUser._id);
+    try {
+      const updatedCard = await api.changeLikeCardStatus(card._id, !isLiked);
+      setCards((state) =>
+        state.map((c) => (c._id === card._id ? updatedCard : c))
+      );
+    } catch (error) {
+      console.error("Erro ao curtir/descurtir:", error);
+    }
   };
 
-  const handleCardDelete = (cardId) => {
-    const filteredCards = cards.filter((card) => card._id !== cardId);
-    setCards(filteredCards);
+  const handleCardDelete = async (cardId) => {
+    try {
+      await api.deleteCard(cardId);
+      setCards((prev) => prev.filter((c) => c._id !== cardId));
+    } catch (error) {
+      console.error("Erro ao deletar card:", error);
+    }
   };
 
   return (
     <CurrentUserContext.Provider
-      value={{
-        currentUser,
-        handleUpdateUser,
-        handleUpdateAvatar
-      }}
+      value={{ currentUser, handleUpdateUser, handleUpdateAvatar }}
     >
       <div className="page__content">
         <Header />
@@ -107,6 +106,8 @@ const handleUpdateUser = async (data) => {
     </CurrentUserContext.Provider>
   );
 }
+
+
 
 
 

@@ -3,16 +3,16 @@ import trashIcon from "/src/images/Trash.png";
 import likeIcon from "/src/images/Group.png";
 import likedIcon from "/src/images/Union.png";
 import rectangle from "/src/images/Rectangle.png";
-
+ 
 export default function Card({ card, onCardClick, onCardDelete, onCardLike }) {
   const handleLikeClick = () => {
     onCardLike(card);
   };
-
+ 
   const handleDeleteClick = () => {
     onCardDelete(card._id);
   };
-
+ 
   return (
     <div className="element">
       <img
@@ -44,6 +44,12 @@ export default function Card({ card, onCardClick, onCardDelete, onCardLike }) {
     </div>
   );
 }
+
+
+
+
+
+
 
 
 

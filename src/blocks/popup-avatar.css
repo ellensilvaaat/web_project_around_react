@@ -90,3 +90,7 @@
   color: red;
   font-size: 12px;
 }
+
+.popup-avatar__input {
+  width: 98%;
+}
